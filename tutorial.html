@@ -1,0 +1,341 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="anime.js"></script>
+    <meta charset="utf-8">
+    <script src="tutorialJS.js"></script>
+    <link rel="stylesheet" type="text/css" href="tutorialCSS.css">
+</head>
+
+<body>
+    <!--<div id="nav">-->
+        <!--<a href="index.html">Index</a>
+        <a href="about.html">About Me</a>
+        <a href="labs.html">Labs</a>
+        <a href="virtualPage.html">Virtual Page</a>
+        <a href="Game.html">Game</a>-->
+    <!--</div>-->
+    <h1 class="title">ANIME.JS</h1>
+    <p class="whatItIs">An animation plugin for Javascript</p>
+
+    <div class="container">
+        <div class="intro">
+            <h1>ABOUT ANIME.JS</h1>
+            Anime.js is an animation plugin for Javascript, and is important to get to know as it can be a powerful tool
+            to make your website more professional and attractive to users. Also, getting familiar with this plugin may
+            provide a helpful learning experience in learning how to quickly adapt to plugins!
+        </div>
+        <div class="intro">
+            <h1>OBJECTIVES</h1>
+            To familiarize with <a href="http://animejs.com/" target="_blank">Anime.js's</a> objects by building a manga chapter reader. This will
+            include navigating between pages, and displaying a previous page, current page, and next page.
+            This tutorial will also include a loading animation, allow previews of the previous and next page when hovered, and the animation
+            of the current page onto the main part of the screen.
+        </div>
+        <div class="intro">
+            <h1>REQUIREMENTS</h1>
+            <ul>
+                <li>
+                    <a href="https://notepad-plus-plus.org/" target="_blank">Notepadd++ </a>
+                    | <a href="https://www.visualstudio.com/" target="_blank">Visual Studio </a>
+                    | (or any general text editor)
+                </li>
+                <li>
+                    Basic knowledge of <a href="https://www.w3schools.com/css/" target="_blank">CSS</a>,
+                    <a href="https://www.w3schools.com/html/" target="_blank">HTML</a>,
+                    <a href="https://www.w3schools.com/js/" target="_blank">Javascript (DOM)</a>
+                </li>
+
+            </ul>
+        </div>
+        <div class="intro">
+            <h1>TUTORIAL NOTE</h1>
+            This tutorial will NOT be going over much (if any) of the CSS portion of the code, as this tutorial is geared towards the familiarization
+            of Anime.js. To learn more about CSS, please visit the provided link in the requirements section.
+        </div>
+        <div class="intro">
+            <h1>READING THIS TUTORIAL</h1>
+            In this tutorial, I have included screenshots of the code at that point of the tutorial.
+            All images are clickable, and will direct you to a new tab displaying the image at its original size (better readability)! Some images have
+            highlighted parts to better point out which piece of code I am referring to, and it's placement. Finally, all steps have a link that shows
+            how the webpage should look and function at that step of the tutorial!
+        </div>
+    </div>
+    <div class="step" id="demoLink"><a href="demo.html" target="_blank">TO SEE DEMO, CLICK HERE!</a></div>
+    <!-- STEPS ----------------------------------------------------------------------------------------------------------------->
+    <div class="step">
+        <h1>STEP ONE: Setting up</h1>To get started, you need to download the anime.js
+        plugin from <a href="Animejs.com">Animejs.com</a> and place the anime.js file
+        in the same folder as the demo files. Let's start with the HTML file! Go ahead and open
+        up a text editor such as Notepadd++ or Visual Studio! For this demonstration, I used both
+        Notepad++ (and then transferred my code to Visual Studio for publishing).
+        In the body of the html file, we're going to add a script reference to that anime.js file! It is important to note that the
+        reference to anime.js is placed in the body!I've also included references to the two files we will need: demoJS.js and demoCSS.css
+        <a href="https://orig00.deviantart.net/d588/f/2017/320/c/3/code_1_by_crispygray-dbtxifb.png" target="_blank">
+            <img src="https://orig00.deviantart.net/d588/f/2017/320/c/3/code_1_by_crispygray-dbtxifb.png" />
+        </a>
+        <a href="https://orig00.deviantart.net/f85d/f/2017/321/f/a/file_placement_by_crispygray-dbu0cg8.png" target="_blank">
+            <img src="https://orig00.deviantart.net/f85d/f/2017/321/f/a/file_placement_by_crispygray-dbu0cg8.png">
+        </a>
+        <a href="stepOne.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+
+    <div class="step">
+        <h1>STEP TWO: All the HTML needed</h1>
+        To create our manga reader, we will have 3 parts. A navigation section (with previous and next page buttons), an introduction section
+        with a blank input element, and 3 images that will hold the previous, current,
+        and next manga page. This is all that we will need for the HTML portion of the demo. Please
+        take note of the ID's of the elements in the image below.
+        <a href="https://orig00.deviantart.net/29f9/f/2017/320/f/4/code2_by_crispygray-dbtxkmu.png" target="_blank">
+            <img src="https://orig00.deviantart.net/29f9/f/2017/320/f/4/code2_by_crispygray-dbtxkmu.png" />
+        </a>
+        <a href="stepTwo.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+
+    <div class="step">
+        <h1>STEP THREE: Make them invisible for now</h1>
+        To restrict user options, we should first set everything but the introduction section as hidden (CSS).
+        <a href="stepThree.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+
+    <div class="step">
+        <h1>STEP FOUR: Animate load</h1>
+        We will first animation the loading of the page using the input element we placed in the introduction section! To do this, we will
+        first need to review how the animation syntax of Anime.js looks like! To animate, you need to
+        code "anime({ ... });" first! (In other words, you will be creating anime functional objects) Next we will look at a few properties
+        that can be manipulated to get the desired animation!
+        <ul>
+            <li>
+                TARGETS - elements, object, etc. to be selected for animation
+                <ul><li>'#loading'</li></ul>
+            </li>
+            <li>
+                VALUE - value of element(s) to be animated to as it changes
+                <ul><li>'100%'</li></ul>
+            </li>
+            <li>
+                EASING - an animation parameter, specifying the easing type of the animation
+                <ul><li>'easeInOutExpo'</li></ul>
+            </li>
+            <li>
+                DURATION - how long the animation will take (in milliseconds)
+                <ul><li>3000</li></ul>
+            </li>
+            <li>
+                ROUND - rounding the value (remove decimals)
+                <ul><li>1</li></ul>
+            </li>
+        </ul>
+        NOTE: How each property name ends with a colon, and the assign value ends with a parentheses!
+        <a href="stepFour.html" class="soFar" target="_blank">What it should look like now</a>
+
+    </div>
+
+    <div class="step">
+        <h1>STEP FIVE: Let's start reading</h1>
+        Next we will look at animation options.
+        <ul>
+            <li>UPDATE - will run the functional object every frame of the animation</li>
+            <li>COMPLETE - will run once the animation is complete (will not work for infinite loops)</li>
+            <li>BEGIN - will run once the animation has started</li>
+        </ul>
+        For this part of the demo, we will want to replace the loading input element with a button to start reading
+        the manga chapter itself! Therefore, after the animation has ended, we will want to get the input element, remove it,
+        and create a button with the id "start", and insert it where the animated input element was. </br>
+        Afterward, we will attach a click event listener to the start button, which once clicked, will make all the other
+        buttons/sections of the page that were previously hidden visible again, and delete the introduction section (along with the start button itself).
+        <a href="https://orig00.deviantart.net/e7a5/f/2017/320/e/3/when_load_is_complete_by_crispygray-dbtyeho.png" target="_blank">
+            <img src="https://orig00.deviantart.net/e7a5/f/2017/320/e/3/when_load_is_complete_by_crispygray-dbtyeho.png">
+        </a>
+
+        <a href="stepFive.html" class="soFar" target="_blank">What it should look like now</a>
+        The previous and next page divs on the left have had their opacity lowered. All three divs have an inital background of solid white.
+        But this will change as each will be assigned a background image!
+
+    </div>
+
+    <div class="step">
+        <h1>STEP SIX: Animate current page</h1>
+        We will now animate the current page div. </br></br>NOTE: Each page div is set up so that the ratio of
+        the div size is the same as the original page and therefore can be
+        easily scaled up in the animation object. This may require some simple math calculations.
+        If dealing with different sized pages, this CSS approach may need some revision,
+        but the page images in this demo are all the same dimension. In addition, the
+        page divs have been translated down the webpage's side for a more professional look, though this is not essential. </br></br>
+        To animate the current page div, we will be revisiting the animation object
+        we wrote in the previous step. Similar to this step, we will be animating the current
+        page div so that it is translated horizontally and vertically to the center of the page, while also scaling it up for readability.
+        Some new animation parameters introduced
+        in this step are:
+        <ul>
+            <li>SCALE - scaling the selector up or down</li>
+            <li>AUTOPLAY - specifies whether or not the animation automatically runs</li>
+            <li>TRANSLATEX - translates how far right or left the selector will be moved</li>
+            <li>TRANSLATEY - translates how far up or down the selector will be moved</li>
+        </ul>
+        <a href="https://orig00.deviantart.net/75d3/f/2017/320/2/e/display_function_2_by_crispygray-dbtzci9.png" target="_blank">
+            <img src="https://orig00.deviantart.net/75d3/f/2017/320/2/e/display_function_2_by_crispygray-dbtzci9.png">
+        </a>
+        We will also be attaching this animation as the event when the next page button is clicked.
+        This code will be placed in the complete parameter option of
+        the previous animation object we wrote:
+        <a href="https://orig00.deviantart.net/008c/f/2017/320/7/b/display_function_1_by_crispygray-dbtzci5.png" target="_blank">
+            <img src="https://orig00.deviantart.net/008c/f/2017/320/7/b/display_function_1_by_crispygray-dbtzci5.png">
+        </a>
+        Notice the ".restart" method in the assignment of a click event listener. This means that the displayPage animation will play every time
+        the button is clicked. Here are some more options offered by Anime.js!
+        <ul>
+            <li>RESTART - restart and play the animation</li>
+            <li>PLAY - plays the animation once, cannot be played again using this button / event listener</li>
+            <li>PAUSE - pauses the animation</li>
+        </ul>
+        <a href="stepSix.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+
+    <div class="step">
+        <h1>STEP SEVEN: Navigation Buttons</h1>
+        To display the next page of the manga chapter, we will need to do 3 steps. First, we will need a string array of all the pages of the manga chapter.
+        In the demo, I made an array contain all pages of Noragami's chapter 57 (approximately 44 pages).
+        <a href="https://orig00.deviantart.net/8fc7/f/2017/320/4/5/manga_pages_array_by_crispygray-dbtzdtt.png" target="_blank">
+            <img src="https://orig00.deviantart.net/8fc7/f/2017/320/4/5/manga_pages_array_by_crispygray-dbtzdtt.png">
+        </a>
+        Next, we will need to create a (normal Javascript) function to update the divs to display the pages we want. To do
+        this, I have created a variable (pageNum) to hold the current place of the current page in the manga page array.
+        In the anime object (in which I named displayNewPage), we will update each div with the appropriate element in the
+        manga page array.
+
+        <a href="https://orig00.deviantart.net/76f5/f/2017/320/0/1/displaynewpage_1_by_crispygray-dbtzeci.png" target="_blank">
+            <img src="https://orig00.deviantart.net/76f5/f/2017/320/0/1/displaynewpage_1_by_crispygray-dbtzeci.png">
+        </a>
+
+
+        NOTE: The previous page update to its background image is checked in the case that when the user
+        clicks the previous page navigation button, that the current page is now the very first page.
+        In this case, the background image for the previous page div is removed,
+        and the div returns to its solid white background again (as it was when first starting the manga reader)
+        </br></br>
+        We are not done this step just yet! This function must be called every time the user clicks navigation button, but
+        also when the user first clicks the start button! Therefore, we must increment the pageNum variable (thus the reason why
+        it was initiated as -1)
+        and run the displayNewPage function when the start button is clicked!
+        <a href="https://orig00.deviantart.net/619e/f/2017/320/c/9/displaynewpage_2_by_crispygray-dbtzeeo.png" target="_blank">
+            <img src="https://orig00.deviantart.net/619e/f/2017/320/c/9/displaynewpage_2_by_crispygray-dbtzeeo.png">
+        </a>
+
+        <a href="stepSeven.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+
+    <div class="step">
+        <h1>STEP EIGHT: Preview Next and Previous Pages</h1>
+        We will now focus on the navigation buttons. Each button will have two click events attached to it, one for
+        running the displayPage animation object, and the other to update pageNum.</br></br>
+        Let's start with the next page button!</br></br>
+        First attach a click event handler to the next button (using it's ID) with the displayPage animation object.
+        We will also attach a second click even handler to update the pageNum variable. For the next page button, we
+        must take care of the case in which there is no next page in the manga chapter. In this case, pageNum+1 would equal null.
+        If it is null, send a alert message to the user indicating the end of the chapter, and do not run the displayPage animation
+        object. If this isn't the case, simply increment pageNum, and run displayPage to update the page divs.
+        <a href="https://orig00.deviantart.net/50ca/f/2017/320/1/0/end_of_chapter_for_next_button_by_crispygray-dbtzfw8.png" target="_blank">
+            <img src="https://orig00.deviantart.net/50ca/f/2017/320/1/0/end_of_chapter_for_next_button_by_crispygray-dbtzfw8.png">
+        </a>
+        The code for the previous page button will be very similar. However, instead of looking for the end of the chapter, we will look for the
+        case in which there is not previous page for the current displayed page. In this case, pageNum would equal 0 (first element of manga page array).
+        Code an alert message for the user that the current displayed page is the first page of the chapter, and do nothing else. If pageNum is not zero (greater than),
+        decrement pageNum, and run displayPage to update the page divs.
+        <a href="https://orig00.deviantart.net/e698/f/2017/320/5/d/no_previous_page_previous_button_by_crispygray-dbtzfwf.png" target="_blank">
+            <img src="https://orig00.deviantart.net/e698/f/2017/320/5/d/no_previous_page_previous_button_by_crispygray-dbtzfwf.png">
+        </a>
+
+        <a href="stepEight.html" class="soFar" target="_blank">What it should look like now</a>
+
+    </div>
+
+    <div class="step">
+        <h1>STEP NINE:</h1>
+        Almost done! Let's add some more fancy animations to our previous page and next page divs! For this animation, we are going to make it
+        so that when the user clicks on one of these divs, that div will scale up (but not as large as the current page div), and will need
+        to be translated to the right and from the top/bottom to account for that scaling. In addition, the div's opacity will change as it is animated.
+        It's opacity will increase as it is scaled for preview, and decrease as it reverts back to its original size and position.
+        To do this, we must first introduce another animation parameters:
+        <ul>
+            <li>DIRECTION - specifies the direction of the animation (either 'alternate' or 'reverse')</li>
+        </ul>
+        In this animation, we will be using the alternate value for the direction property! We will also attach a click event listener to the next page button, increase
+        opacity at the begining of the animation, and decrease the opacity at the completion of the animation.
+        <a href="https://orig00.deviantart.net/a768/f/2017/321/5/1/nextpage_div_animation_by_crispygray-dbtzgzg.png" target="_blank">
+            <img src="https://orig00.deviantart.net/a768/f/2017/321/5/1/nextpage_div_animation_by_crispygray-dbtzgzg.png">
+        </a>
+
+
+        The code for the animation of the previous page div is the same, except the translationY property will likely need to be negative so
+        that the page will be in view at the current position in the window, otherwise the user would have to scroll
+        down the page will may get messy! Again, be sure to attach a click event listener!
+        <a href="https://orig00.deviantart.net/82c8/f/2017/321/b/7/prevpage_div_animation_by_crispygray-dbtzgzm.png" target="_blank">
+            <img src="https://orig00.deviantart.net/82c8/f/2017/321/b/7/prevpage_div_animation_by_crispygray-dbtzgzm.png">
+        </a>
+        <a href="stepNine.html" class="soFar" target="_blank">What it should look like now</a>
+    </div>
+    <div class="container">
+        <div class="intro">
+            <h1>DONE!</h1>
+            With that you are finished creating your manga chapter reader! But of course, there are many more things to be offered by Anime.js!
+            If you're interested in SVG animation, they also offer animation for them as well!
+            </br>Please visit <a href="http://animejs.com/">ANIMEJS.COM</a> for more information!
+        </div>
+        <div class="intro">
+            <h1>Summary</h1>
+            To summarize this demo, we have created a load page, that allows the user to start read the manga chapter after clicking the start button. Afterwards, the user is
+            free to navigate the chapter using the provided next and previous page buttons at the top of the webpage. In addition, we included animation for the previous and next page
+            divs so that the user can see a preview of them when clicked.
+        </div>
+        <div class="intro">
+            <h1></h1>
+        </div>
+    </div>
+
+    <script src="anime.js"></script>
+    <meta charset="utf-8">
+    <script>
+            anime({
+            targets:'.loading',
+            value:'100%',
+            easing: 'easeInOutExpo',
+            duration:3000,
+            round:1,
+            loop:true,
+            
+            complete: function(anim){
+                document.getElementById("loading3").parentNode.removeChild(document.getElementById("loading3"));
+                var startNode = document.createElement("button");
+                startNode.id = "start";
+                startNode.innerHTML = "Let's start reading!";
+                document.getElementById("demo").appendChild(startNode);
+                
+                var startButton = document.getElementById("start");
+                startButton.addEventListener("click",displayPage.restart);
+                document.getElementById("start").onclick = function(){
+                    //make pages visible
+                    document.getElementById("currentPage").style.visibility = "visible";
+                    document.getElementById("nextPage").style.visibility = "visible";
+                    document.getElementById("previousPage").style.visibility = "visible";
+                    //make navigation buttons visible
+                    document.getElementById("previous").style.visibility = "visible";
+                    document.getElementById("next").style.visibility = "visible";
+                    pageNum++;
+                    displayNewPage();
+                    
+                    document.body.removeChild(document.getElementById("intro"));
+            }
+            }
+        });
+
+
+    </script>
+
+</body>
+<footer>
+    A tutorial by Kristina Truong |
+    TUID: 915194050 |
+    CIS 3344
+</footer>
+</html>

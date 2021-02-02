@@ -1,0 +1,12 @@
+﻿body {
+}
+
+.shown{
+    display: inline-block;
+}
+
+.hidden{
+    display:none;
+}
+
+

@@ -1,0 +1,218 @@
+﻿body {
+    padding:0px;
+    margin:0px;
+    border:0px;
+    background-color: white;
+    font-family: "Century Gothic",sans-serif;
+}
+
+#scroll{
+    position:relative;
+    top:50px;
+    z-index:-1;
+    width:100%;
+    padding:0px;
+}
+
+/*For header image and navigation (to be fixed on page)*/
+#fixed{
+    position:fixed;
+    top:0%;
+    z-index:10;
+    width:100%;
+    padding:0px;
+}
+/*Basic container for each virtual page*/
+div{
+    width:100%;
+    padding-top: 20px;
+    padding-bottom:20px;
+}
+
+.container{
+	padding:20px;
+    padding-top:40px;
+	width:90%;
+}
+
+.nav{
+    width:100%;
+    background-color: black;
+    color:white;
+    text-align: center;
+    text-transform:uppercase;
+}
+
+
+
+a{
+    text-decoration:none;
+    color: white;
+    padding:20px;
+}
+a:visited{
+    color: lightblue;
+}
+
+a:hover {
+    background-color: white;
+    color: black;
+    padding: 20px;
+}
+
+h2{
+    text-transform:uppercase;
+}
+
+#landing{
+    background-color:black;
+    color:white;
+	width:100%;
+}
+
+#landing img {
+        border-radius: 50%;
+        height: 200px;
+        width: 200px;
+        object-fit:cover;
+}
+#info{
+    background-color:white;
+    color: black;
+    width:100%;
+    text-align: center;
+}
+
+#info>.section{
+    background-color:black;
+    padding:10px;
+    margin:5px;
+    color:white;
+    text-align:center;
+    display:inline-block;
+	width:25%;
+
+}
+
+
+
+#info img{
+    height:200px;
+    display:inline;
+    max-width:100%;
+    background-color:white;
+    color:black;
+}
+
+
+#form{
+
+    background-color:black;
+    color:white;
+}
+
+
+
+label{
+	display:block;
+}
+form{
+    display:inline;
+}
+
+#gallery{
+    background-color:white;
+    color: black;
+    width:100%;
+    padding-bottom:100px;
+    text-align:center;
+}
+
+#gallery div{
+	padding:0px;
+	margin:0px;
+    display:inline-block;
+}
+
+#gallery .unit{
+    max-width:30%;
+    max-height:500px;
+    display:inline-block;
+    margin:0px;
+    padding:0px;
+    border:0px;
+}
+
+#gallery img{
+    width:100%;
+    max-height:80%;
+
+}
+
+#gallery #caption{
+    background-color:black;
+    color:white;
+    display:inline-block;
+}
+
+footer{
+    background-color: grey;
+    color:white;
+}
+
+/*------------------------------------- Media section below*/
+
+@media screen and (max-width: 600px){
+	#fixed{
+		position:static;
+	}
+	#scroll{
+		position:static;
+	}
+    .nav a{
+        display:block;
+    }
+	#landing img{
+        text-align:center;
+        width:100px;
+        height:100px;
+	}
+	#info>.section{
+		display:block;
+		padding:0px;
+		margin:0px;
+		margin-top:20px;
+		margin-bottom:20px;
+		padding-top:20px;
+		padding-bottom:20px;
+		width:100%;
+	}
+    #gallery {
+        text-align: center;
+        width: 100%;
+        display:block;
+    }
+    #gallery .unit{
+        max-width:100%;
+        max-height:20%;
+        display:block;
+    }
+
+    #gallery img{
+        max-height:20%;
+
+        display:block;
+    }
+    #gallery div{
+        display:block;
+    }
+
+    #gallery #caption{
+        display:block;
+        padding:20px;
+    }
+    td{
+    display:block;
+}
+
+}

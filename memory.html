@@ -1,0 +1,309 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="memory.js"></script>
+    <link rel="stylesheet" type="text/css" href="memoryCSS.css" />
+</head>
+<body>
+    <div id="fixed">
+        <!--<div id="nav">
+            <a href="index.html">Index</a>
+            <a href="about.html">About Me</a>
+            <a href="labs.html">Labs</a>
+            <a href="virtualPage.html">Virtual Page</a>
+            <a href="memory.html">Game</a>
+            <a href="tutorial.html">Tutorial Project</a>
+        </div>-->
+    </div>
+
+    <div id="scroll">
+        <h1>Game of Memory</h1>
+        <div id="rules">
+            Flip 2 cards at a time to get a match!</br>The faster you finish, the more points you get!</br>
+            Under 1 minute = 10 extra points</br>
+            Under 2 minutes = 5 extra points</br>
+            Under 3 minutes = 2 extra points</br></br>
+			*Images are slightly large and may need 1 or 2 </br>seconds to load when flipping first few cards!
+        </div>
+        <div id="timer"></div>
+		<input id="btnStart" type="button" value="Let's Play" /></br>
+		<input id="playAgain" type="button" value="Play Again!" />
+        <div id="row0"></div>
+        <div id="row1"></div>
+        <div id="row2"></div>
+        <div id="row3"></div>
+        <div id="row4"></div>
+        </br>
+        
+    </div>
+
+
+    <script>
+        window.onload = function () {
+
+        //DEBUG: alert("Start game!");
+        //array holding game images (10)
+            var gameImgs = ["https://orig00.deviantart.net/9108/f/2016/119/0/2/project_final_marked_by_crispygray-da0pxvs.jpg",
+            "https://orig00.deviantart.net/1668/f/2016/329/6/3/mystery_oc_2_by_crispygray-daplkll.jpg",
+            "https://orig00.deviantart.net/7c3b/f/2016/093/b/e/markl_da_by_crispygray-d9xloh2.jpg",
+            "https://orig00.deviantart.net/1e7f/f/2016/083/e/5/spirited_away_sketch_da_by_crispygray-d9wclzj.jpg",
+            "https://orig00.deviantart.net/c7c0/f/2016/115/c/1/sketch_43_marked_by_crispygray-da06uom.jpg",
+            "https://orig00.deviantart.net/7a61/f/2016/101/d/9/flower_girl_edited_marked_by_crispygray-d9ympd7.jpg",
+            "https://orig00.deviantart.net/b681/f/2016/142/0/c/atsushi_marked_by_crispygray-da3gn5a.jpg",
+            "https://pre00.deviantart.net/04f3/th/pre/i/2017/159/0/0/commission___kaede_by_crispygray-dbbzhif.jpg",
+            "https://orig00.deviantart.net/a0e0/f/2017/088/5/e/winter_final_marked_by_crispygray-db3xjmc.jpg",
+            "https://orig00.deviantart.net/99b7/f/2016/287/5/8/fleeting_marked_by_crispygray-dakywxj.jpg"];
+
+        //array for each row
+        //to hold the actual image 
+            var gameArray0 = new Array(4);
+            var gameArray1 = new Array(4);
+            var gameArray2 = new Array(4);
+            var gameArray3 = new Array(4);
+            var gameArray4 = new Array(4);
+
+        //DEBUG: alert("visited1");
+        //creation of 2d array
+        //to hold previous arrays
+            var gameArray = [gameArray0, gameArray1, gameArray2, gameArray3, gameArray4];
+            var gameArrayInts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //count of each image (should only have 2 each)
+
+        //keep track of number of cards turned over
+            var cardOne = -1; //initialize card 1 to -1 (empty)
+            var cardTwo = -1; //initialize card 2 to -1 (empty)
+            var score = 0; //initialize score to 0
+            var totalScore = 0; //point total throughout games
+            var match = 0; //initialize match flag to 0
+            var myTimer //set timer var
+            var timer = 0; //initialize time to 0
+            var pauseTimer = false; //flag for pausing and restarting timer
+            var wins = 0; //number of wins / games played
+
+            function timerCount() {
+            //CITATION: https://stackoverflow.com/questions/21277900/javascript-pausing-setinterval - creating flag to accomodate for multiple games
+            //CITATION: https://www.w3schools.com/js/js_timing.asp - create a general timer
+            //increment timer variable every 1 second
+                if(!pauseTimer){ 
+                    timer++;
+                    //display timer as it runs, and constantly update it when timer variable is updated
+                    var timeText = document.getElementById("timer");
+                    timeText.textContent = "time: " + timer; //display undated timer
+                }
+            }
+            var isEndCheck = function(){
+                            var isEnd = 1; //check if end of game
+                            //loops through all img nodes, if there is an instance in which the img src equals 
+                            //to the original mystery card image, then the game is not over
+                            //if all do not equal that mystery card image, game is over, display score
+                            for (var i = 0; i < 5; i++) {
+                                for (var j = 0; j < 4; j++) {
+                                    var checkID = "" + i + j;
+                                    var checkImgNode = document.getElementById(checkID);
+                                    if (checkImgNode.src == "data:image/png;base64,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") {
+                                        isEnd = 0;
+
+                                    }
+                                }
+                            }
+                        
+                            //if end remains the same, is end of game
+                            if (isEnd == 1) {
+                                wins++; //increment number of wins / games
+                                var bonus = 0; //bonus points var
+                                pauseTimer = true; //stop timer
+                                //assign to appropriate bonus point amount
+                                if (timer < 60) { bonus = 10; }
+                                else if (timer < 120) { bonus = 5; }
+                                else if (timer < 180) { bonus = 2; }
+                                
+                                totalScore+=score+bonus; //add to totalscore through games
+                                
+
+                                //display congratulations and scores and time taken to complete game
+                                alert("Congrats!" + "\nBonus Points : " + bonus + "\nRaw score: " + score + "\nGame score: " + (bonus + score) + "\nTotal Score (all games) : " + 
+                                            totalScore +"\nTimer : " + timer + " seconds" + "\n-------------------------------\nWins : " + wins);
+                                score=0; //reset score for next game
+                                playAgainButton.style.visibility = "visible"; //make play again button visible
+                            }
+                        }
+            
+            
+        var btnStart_click = function () {
+                //timer start
+            myTimer = setInterval(function () { timerCount() }, 1000);
+            //remove event handler for start button so user cannot create another set of cards
+            document.getElementById("btnStart").removeEventListener('click', btnStart_click);
+            createDivImgNodes();
+            randomizeGameBoard();
+        }
+        //event handler for clicking a card
+        //flips over image and sets to one of two available cards
+        var imgClick = function () {
+                        //alert(this.id); //DEBUG : display element id
+                        
+                        var row = this.id.charAt(0); //get row from id string
+                        var index = this.id.charAt(1); //get index from id string
+                        this.src = gameArray[row][index];
+                        
+                        if (cardOne == -1) { //if first card empty
+                            cardOne = this.id; //set first card to current clicked card
+                        }
+                        else if (cardTwo == -1) { //if second card is empty
+                            if(cardOne != this.id){
+                                cardTwo = this.id; //assign second card to current card
+                                //change img of current card to it's associated img in the game array
+                                
+                                
+                                var cardOneCompare = document.getElementById(cardOne); //get node of first card using cardOne value (id)
+                                var cardOneRow = cardOneCompare.id.charAt(0); //get row from card one node
+                                var cardOneIndex = cardOneCompare.id.charAt(1); //get index from card one node
+
+                                //check to make sure user didn't click same card again, compared using id string
+                                if (cardTwo != cardOne) {
+                                    //check if two cards picked have the same picture
+                                    if (gameArray[row][index] == gameArray[cardOneRow][cardOneIndex]) { //if yes
+                                        //increment score
+                                        score++;
+                                        //alert("It's a match"); //DEBUG : indicate a match
+                                        match = 1; //increment match flag
+                                        //remove click event handler for both cards to avoid future errors
+                                        cardOneCompare.removeEventListener('click', imgClick);
+                                        this.removeEventListener('click', imgClick);
+                                        
+                                        //lower opacity so user knows card was already matched
+                                        cardOneCompare.style.opacity = 0.4; 
+                                        this.style.opacity = 0.4;
+                                        
+                                    }
+                                    else {
+                                        if (score > 0) {
+                                            score--; //decrement score if not a match (score cannot go below 0)
+                                        }
+                                        
+                                    }
+                                }
+                            }
+
+
+                        }
+
+                            //if both cards are not empty
+                        else {
+                            var flipCardOne = document.getElementById(cardOne);
+                            var flipCardTwo = document.getElementById(cardTwo);
+                            //if match flag is zero, flip the previous two cards back 
+                            if (match == 0) {
+                                flipCardOne.src = "data:image/png;base64,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";
+                                flipCardTwo.src = "data:image/png;base64,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";
+
+                            }
+
+                                //if match flag is 1, there was a match in the last two flips
+                                //set match back to 0, (therefore keeping the previous cards still flipped up)
+                            else {
+                                match = 0;
+                                
+                                
+                            }
+
+                            //set card 1 to current card node
+                            cardOne = this.id;
+                            //set card 2 back to empty
+                            cardTwo = -1;
+                            
+                        }
+                        isEndCheck();
+                        
+
+    
+
+        }
+        var createDivImgNodes = function () {
+            //creates new img nodes in divs
+            //a 4x5 grid of cards
+            for (var i = 0; i < 5; i++) {
+                var row = "row" + i;
+                //get row id string
+                var divNode = document.getElementById(row); //find div row
+                //
+                for (var j = 0; j < 4; j++) {
+                    //create a node
+                    var imgNode = document.createElement("IMG");
+                    //assign img src property to general mystery image url
+                    imgNode.src = "data:image/png;base64,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";
+                    //give it unique id (row,index)
+                    imgNode.id = "" + i + j;
+                    divNode.appendChild(imgNode); //append to original div node
+                    //imgNode.found = 0; //
+                    imgNode.style.height = "100px"; //set height and width of node to make board uniform
+                    imgNode.style.width = "150px";
+                    imgNode.style.objectFit = "cover"; //fill height and width of node until image covers all of it (and doesn't skew image)
+                    document.getElementById("" + i + j).addEventListener('click', imgClick); //attach img click event handler
+                }
+            }
+        }
+        var randomizeGameBoard = function () {
+            for (var i = 0; i < 5; i++) {
+                for (var j = 0; j < 4; j++) {
+
+                    var filled = 1
+                    var randomImg = Math.floor(Math.random() * 10)
+                    //alert(randomImg);
+                    while (filled == 1) {
+
+                        if (gameArrayInts[randomImg] < 2) {
+                            gameArray[i][j] = "" + gameImgs[randomImg];
+                            gameArrayInts[randomImg]++;
+                            filled = 0;
+                            break;
+
+                        }
+                        else {
+                            randomImg = Math.floor(Math.random() * 10);
+                        }
+                    }
+
+
+                    //alert("gameArray["+i+"]["+j+"] -- "+randomImg + " ");
+                    //alert(gameArray[i][j]);
+                }
+            }
+        }
+        //event handlers
+        document.getElementById("btnStart").addEventListener('click', btnStart_click); //attach click even to start button
+        //play again - reset board
+        var play = function playAgain() {
+        timer = 0;
+        pauseTimer = false;
+        //flip all images back to mystery image
+        for (var i = 0; i < 5; i++) {
+            for (var j = 0; j < 4; j++) {
+                var checkID = "" + i + j;
+                var checkImgNode = document.getElementById(checkID);
+                checkImgNode.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAhFBMVEUAAAD////09PTGxsYcHBzr6+vy8vLW1tZPT0/29vZGRkbk5ORDQ0Pu7u4EBAQgICAsLCzd3d3m5ubT09OioqJ/f3+Hh4daWlpgYGAmJibLy8s9PT2fn58SEhJtbW01NTWvr6+MjIxeXl61tbWTk5NycnK+vr5nZ2eYmJiysrIxMTF5eXk8eW+hAAAImElEQVR4nO2di3qiMBBGaZRgZKMCXvGGW2/bvv/7bSZBRUx2sSAEv/l3ba1F5XQmk0kyROejAbE638yp880+GCOEgUh971kHIZNolFMq4bi449bwtqleSsiUiEAC8VQC0K/PUV9DCFyAJQzHXTd0b0oR20oIzUyIAlUo/vtKIejGJwh52whlK+NUGQyYgosugFkLwpFhOwhVIyPUBYTQD7xIyJPKAGYJr4zW21AZTcgNg8CTZNENz7szoXLSOyva6qXSYtITXXHzgyiOO7GSgIuvjEFG/iMjULp+fR1iUUKabV0BOKRnVJDD1MgDbL+EwsItuShhZ9QdprreKaHusFtWPV4xYdexTL8K5kVIiITNCQmREAmbFxIiIRI2LyREQiRsXkiIhEjYvJAQCZGweSEhEiJh80JCJETC5oWESIiEzQsJkbBKwsGgOq6b+hYRvkZIiITVEg7Ww9FCqbJGaQ3hV++wGyefnbQ+M/5MzrtDb9Rywqud+vujF7gUrkAg7CoeBlFnt02PbR2hoFMnvd0kHvBQQmUlMVGi8g78wh8fypiyQRtKC/ZXUcgoZQqK0gsgwIkb/Ewpj8e9FhIKvtF3TJmgY+TKdiWkKa90XXFUdPhhC2/Qht1DhxLlmJRdjJdeqAD3UleFqzHgR3rctIVQxZf1KaZw9lei/0kcmmEsHnhqJ0zj56/EZSTT6oogCn9O+k9H1Wa8dL3x2HN4MhqJp4Tf6u9kMSHYcDh2WWHvvDJCb0KJm2yL0zVDKEJoIkzCM3GzGJ+IQlwgEvEWzzhqnYTpefUjOE8ZKskDZtpnPFpYhVToN1jcszXSpDGmw8zGk7EVchuIsylnxqHl9VOEBc84ar2EgvErIozrLKQMCHZil17+wZIKVlhxW9yItbZDEWWGCXP1xlPnzmgQRV4ocwBzMOKJnTaEv/tU5ScGH6XeeP41XAy3vxOfMlePCEGVFM9vam6H/YCprlvHx9zxrYEtRY9yn4aTS/4DbhwVHm7U3FskKk6ym2OmJw35d3haZ4+dBPJgTViF295OwmXA7k/0Zj/Ogk0ajECQGPQ45DF6T6XRwkrCnakFChu6u7tDgXTHdQFVOS3/bSPhIjaGR/rRSbGUEdUUwJHqwpJKFhIbCfsBJbmB7tWG7sbJZiqKcEZ0fqqCVWwj4UHGiNtkRXqRNzzIOgtAyvbjwOjpM3SYr/J/Fev1ayXc33ncnW3oSvuMMzMOQvipCF/NhCtjQsrcqXZhZmN6gjDjt42EcspJbxH9+W6MWTrjEwu99Gi0CAnn2hHRiZi8lNFJEb6aCeM7i2RPnYUz7TNOxmbIqI1e2tEmbFIPhMqgE/Z4aMrszi0lNFgkT5h67KfZhv6y3YQqsq590xMIi9e6t2gToRpNGucc2argZE3NhMbz1USagbOMuGmgT2nRMXDNhHJ9kGTWCC9ydbF0xW+Jd/5vE33ZSDgdJ2ODzvm4ITzwW5+TMpjCoWfHPi8VLeuqzN3LI9kjVSMM/zGa9AovKFqzjp+3yOIsUjkDoGiF08IvW/t8acHfzTpylcJAmI61rCP8n27n/DtxobU9DpTTGeFg7hSe2K97vrQI5PIcqoD7YEOqZsL5dF3w9eomLKTtzjcuDCtAWrSzt48QIuososzknjDrLwCTYWsJRSJ6CGQnnzdiSshgQepzYfca8L91VhNppsVTge7uh8+9pF2E31wSmgs0GNk/W/5lFeGeQyh5gEq/wTAjer6mxhpCuU4BLVDjoLKsCKLo8fliE3sIRTcYSQsyjf3kiISG0+6/EyPbCceUZEZL9x4KJjyqRKa9NpyDHxrHuzSQMfS2dNM2woGzlhMA9HEWX+YxtNO7HdpKQsfZ6CYsVHGJS9zPn9fQ2kI4ik3LvURE2N3/X8B6wpl7Cyx5Q/Lj8/HFPsLExCfUeaI+yFrCbnBJZu44ZfkX1y/atIgQzv7ANT2FijPssxSgDYSglbwY4RFRJDP+yWm7DYWGHV1lkCrUj79+kMhYRjhwlh7RFc7I2Zpk7bTehgOn57NcynYZ0xM5uV1GNhCKnJTnW+GleJaxMr29VYQmFV2ut5zw21yGwt+DcGo0YeGSC9sJTSUlb+OlZsJ3t+H7eykSIiESIuHLCWGq+80I85fqwUxpwSJLywknH49VUqAPYcT3sOHB/LFX0aH1hLLKcmTS16hs6UPzhK8WEiIhEjYvJKyLcJD77gyq2grLFsIU6+6HahitIbzSdBeLYZXbC1pDqBhHp/2f4/GY7GclVyvsI5TLS/2956YXltLgoXq/9YTOehPddlGghEUTpwoz2kLoOItVcH8JEOP7bgVbflpD2F3lyxIpY38qMKI1hFOXEpJbQmTk/D6Ec7mfBMvywS382R5tNhKO73aiI+kGIZQc38WGJ1e7OZRALHgtrPWEY+2mSQB9fA/CUUy4pvwZomvwZGm+pYR9X+Yxj15KWFh0lxaLCUUsmbu5SHpphuKhN5gRFoQnzvTbCYmH32NGeM6ZbnsI2TTbTwgd3owz/fWUlLhl+/zmCeVZ+Ey7q5d4yO2/AeHAWR9NlyGw6B3GFoJhRbQXW4gH9XsPtYxQaCl3SrwPMvCPBT/f5touQjBizj3lVz4uC2gN4dbLV19yGFzEpU1oDWGa1tz5KS2fsllEOBCD/FxPyJm3c8pPY1hCCBibKGtF4aRRBRa0hlAiLj8Z/5Ab0Ys48xGW+LQAWwlF9vYn9l2hMOis9Jt/tZfw8nkXy9n3ZDI5zLaVLV1YQ6i7APat1i0ctfPlCz7Tyh7CVwkJkRAJmxcSIiESNi+bPqXzNUJCJETC5oWESIiEzQsJkRAJmxcSIiESNi8kREIkbF5IiIRI2LyQEAmRsHkhIRJqCF9Q9VNGlRMW/FTC+rSsmND73bNL/VPFhCwMzHs+NaHAY9UStldI2H4hYfuFhO0XErZffwEqLu5CEavH9QAAAABJRU5ErkJggg==";
+                document.getElementById("" + i + j).addEventListener('click', imgClick);
+                checkImgNode.style.opacity = 1;
+            }
+        }
+        //reset game array ints
+        for (var i = 0; i < 10; i++) {
+            gameArrayInts[i] = 0;
+        }
+        randomizeGameBoard(); //randomize game board again
+        
+        playAgainButton.style.visibility = "hidden"; //re-hide play again button
+      }
+      
+      //declaration and initialization of play again 
+    var playAgainButton;
+    playAgainButton = document.getElementById("playAgain"); //get play again button
+    playAgainButton.addEventListener('click', play); //click event handler for play again button
+    playAgainButton.style.visibility = "hidden"; //hide play again button
+
+
+}
+    </script>
+</body>
+</html>

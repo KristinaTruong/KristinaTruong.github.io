@@ -1,0 +1,70 @@
+﻿            body{
+			background-color:white;
+			font-family: Georgia, serif;
+			color: #18758a;
+			padding:0px;
+			margin:0px;
+			border:0px;
+			text-align:center;
+			text-transform: uppercase;
+			}
+			
+			div{
+			display:block;
+			}
+			
+			div>img{
+			width:25%;
+            height:25%;
+			object-fit:cover;
+			display:inline-block
+			}
+			
+			div>#timer {
+				font-size:50px;
+			}
+			
+			#btnStart,#playAgain {
+				padding:20px 20px;
+				font-size:20px;
+				background-color: #18758a;
+				border:none;
+				margin:10px;
+			}
+			#rules{
+				padding-top:20px;
+				padding-bottom:20px;
+				margin-top: 20px;
+				margin-bottom:20px;
+				width:100%;
+				
+				text-align:center;
+				background-color: #18758a;
+				text-transform:none;
+				color:white;
+			}	
+			
+			#nav{
+				padding-top:20px;
+				padding-bottom:20px;  
+				background-color: #18758a;
+				color: white;
+				font-family: 'Bookman Old Style',serif;
+				text-align:center;
+				text-transform: uppercase; 
+				/*display: inline;*/
+			}
+
+			#nav>a{
+				padding-left: 5px;
+				padding-right:5px;
+				text-decoration: none;   
+				color:white; 
+			}
+
+			#nav > a:hover{
+				background-color: white;
+				color: #18758a;
+				padding-top:20px;
+				padding-bottom: 30px;
+}

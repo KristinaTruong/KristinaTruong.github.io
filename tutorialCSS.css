@@ -1,0 +1,162 @@
+body {
+    background-color: white;
+    padding: 20px;
+    font-family: "courier", arial;
+    background-image: url("https://img00.deviantart.net/f9ea/i/2017/320/5/b/noragami_manga_19_free_wallpaper_by_crispygray-dbtxhko.jpg");
+}
+
+#nav {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    background-color: red;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    width: 98%;
+    /*display: inline;*/
+}
+
+    #nav a {
+        padding-left: 5px;
+        padding-right: 5px;
+        text-decoration: none;
+        color: white;
+    }
+
+        #nav a:hover {
+            background-color: black;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+footer {
+    background-color: black;
+    color: white;
+    font-size: 20px;
+    opacity: 0.9;
+    padding: 20px;
+}
+
+.title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 100px;
+    padding: none;
+    margin: 5px;
+    text-shadow: 0px 0px 20px #FFF;
+}
+
+a {
+    text-decoration: none;
+    color: red;
+}
+
+#demoLink {
+    text-align: center;
+    background-color: red;
+    color: white;
+    padding: 20px;
+}
+
+    #demoLink a {
+        padding: 20px;
+        margin: 20px;
+        color: white;
+        font-size: 20px;
+    }
+
+        #demoLink a:hover, #demoLink:hover {
+            background-color: black;
+        }
+
+a:hover {
+    color: pink;
+}
+
+.step {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 95%;
+    opacity: 0.9;
+}
+
+.container {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    margin: 10px;
+    width: 95%;
+    opacity: 0.9;
+}
+
+.intro {
+    max-width: 31%;
+    display: inline;
+}
+
+
+
+    .intro h1 {
+        color: red;
+        text-transform: uppercase;
+        text-align: left;
+        font-size: 15px;
+        background-color: transparent;
+    }
+
+
+.step h1, .step h2 {
+    color: red;
+    text-align: left;
+    font-size: 20px;
+    z-index: 0;
+}
+
+h2 {
+    font-size: 17px;
+}
+
+img {
+    max-width: 45%;
+    border-radius: 10px 30px;
+    display: block;
+    z-index: 100;
+    margin: 20px;
+}
+
+
+.whatItIs {
+    font-family: 'courier',arial;
+    text-shadow: 0px 0px 10px #000;
+    font-size: 40px;
+    color: black;
+    text-transform: bold;
+    text-transform: uppercase;
+    text-align: center;
+    padding: none;
+    margin: 5px;
+    border: none;
+}
+
+.soFar {
+    color: white;
+    font-weight: bold;
+    width: 100px;
+    background-color: #ff0000;
+    padding: 10px;
+    margin: 20px;
+    width: 50%;
+    display: block;
+    text-align: center;
+    border-radius: 10px;
+}
+
+    .soFar:hover {
+        color: red;
+        background-color: white;
+    }

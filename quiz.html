@@ -1,0 +1,416 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<script src="quizJS.js"></script>
+    <link rel="stylesheet" type="text/css" href="quizCSS.css" />
+	<meta charset="utf-8" />
+</head>
+<body>
+		<!--<div class="nav">
+            <a href="index.html">Home</a>
+            <a href="#landing">Landing</a>
+            <a href="#info">Info</a>
+            <a href="#form">Form</a>
+            <a href="#gallery">Gallery</a>
+			<a href="memory.html">Memory Game</a>
+            <a href="tutorial.html">Tutorial Project</a></br>
+        </div>-->
+	<div id="instructions"></br><h1>ANIME QUIZ:</h1></br>Please complete these 20 questions to see how much of an anime fan you are!</div></br>
+	<div id="formHere"></div></br>
+	<input class="button" type="button" name="ENTER" value="ENTER" id="ENTER">
+	<div id="results"></div>
+
+    <script>
+        window.onload = function(){
+    
+    
+    //FORMAT OF ARRAY ELEMENTS:
+    //question , nodeType , type , name , value(s)(separated by '-') , answer
+    var questionArray;
+    document.getElementById("results").style.visibility = "hidden";
+    questionArray = [
+        "Manga is to comic books as Anime is to _______,INPUT, text, animeAnalogy, none, cartoons",
+        "The character that is cold on the outside but soft on the inside is called, INPUT, radio, character, tsundere-bundere, tsundere",
+        "How many people are in Luffy D. Monkey's crew (including himself) in the current anime?,OPTION,none, crew, 0-1-2-3-4-5-6-7-8-9, 9",
+        "Which anime is Midoriya from?,INPUT, radio, anime, My Academy-Heros-My Hero Academia, My Hero Academia",
+        "Masashi Kishimoto is the creator of what anime?, INPUT,text, anime, none, Naruto",
+        "Who is one hell of a butler?, OPTION, none, anime, Sebastian Michaelis-Ciel Phantomhive-Seth Michaelis, Sebastian Michaelis",
+        "Naruto's son's name is Burrito, INPUT, radio, anime, true-false, false",
+        "Which character in SoulEater is obsessed with symmetry?,INPUT, radio, anime, Death the Kid-Death-Maka-Soul, Death the Kid",
+        "Is Kyubei from Gintama a female or male?,INPUT,text,gender, none, female",
+        "Ed Elric from FMA lost how many limbs?,INPUT,number,limbs,none,2",
+        "What is Ash's first pokemon?,INPUT, text, firstPokemon, none, Pikachu",
+        "What character transforms into a girl when wet?,INPUT, radio, anime, Ranma-Wanma-Penwa-Nani, Ranma",
+        "Haikyu is a _______ anime,OPTION, none, anime, sport-romantic-comedy-fantasy, sport",
+        "In Assassination Classroom: the teacher is a _______, INPUT, radio, anime, dinosaur-mouse-horse-octopus, octopus",
+        "In Blue Exorcist: Rin is the son of who?, INPUT, radio, anime, An exorcist-Satan-A priest, Satan",
+        "What sport does Free! revolve around?, INPUT, text, anime, none, swimming",
+        "How many dragon balls are there?, INPUT, number,  anime, none, 7",
+        "Nanbaka takes place in a ________, INPUT, radio, anime, hotel-prison-backyard-arena, prison",
+        "Which anime features sextuplets?, OPTION, none, anime, Mr.Osomatsu-BlackCat-HunterxHunter, Mr.Osomatsu",//19
+        "In Bungo Stray Dogs: what anime does Atsushi turn into?, INPUT, radio, anime, rabbit-monkey-cheetah-tiger, tiger"];
+    
+    //result array to contain recorded correct answers and  user answers
+    var resultsArray = new Array(20);
+    
+    //make results array 2 dimensional to make room for the correct and user answer
+    for(var i =0 ; i<resultsArray.length;i++){
+        var answerInputPair = new Array(4);
+        resultsArray[i] = answerInputPair;
+    }
+    
+    var resultsAnswer = 0;
+    var currentQuestion; //to hold current question string
+    currentQuestion = 0;
+    var question; 
+    var formNode; //holds the form node as a reference
+    formNode = document.getElementById("formHere");
+    var fields = new Array(5); //to hold current question's 5 fields
+    var questionString; //to hold question 
+    var nodeType; //to indicate node type (option, input, etc.)
+    var type; //type attribute
+    var name; //name attribute
+    var values; //values / options the user can pick from (ex. radio values they can choose from)
+    var answer; //right answer to question
+    
+    var valueNode; 
+    var textNode;
+    var labelNode;
+    var multiValues 
+    
+    var valuesArray;
+    var createNode; 
+    var makeParagraphNode;
+    var paragraph;
+    var input;
+    
+    var answeredRight; //count of questions answered right of 20
+    answeredRight=0;
+
+    question = questionArray[0]; //start game with first question
+    
+    //function to break question string into their fields to use
+    //trim fields to get rid of white spaces
+    var breakFields = function(){
+        var fields = question.split(','); //alert("splitting");
+        questionString = fields[0].trim(); //alert("Question string "+fields[0]);
+        nodeType = fields[1].trim();
+        type = fields[2].trim();
+        name = fields[3].trim();
+        values = fields[4].trim();
+        answer = fields[5].trim();
+        valuesArray = values.split('-'); //split values fields into individiual values
+        
+        //DEBUG
+        /*
+        for(var i =0;i<fields.length;i++){
+            //alert("FIELD"+i+": "+fields[i]);
+        }*/
+        
+    }
+    
+    //to delete the previous question so that the new question
+    //can be displayed only
+    var clearQuestion;
+    clearQuestion = function(){
+        if(formNode.hasChildNodes()){
+            while(formNode.firstChild != null){
+                formNode.removeChild(formNode.firstChild);
+            }
+        }
+        
+    }
+    
+    //function to create the new question node(s)
+    createNode = function(){
+        
+        //first clear prev question
+        clearQuestion();
+        //create text node to hold the question string
+        var instructionNode = document.createTextNode(questionString);
+        formNode.appendChild(instructionNode); //append the node
+        //if the values array has more than one available option
+        //call the multiple value method
+        if(valuesArray.length>1){
+            multiValues();
+        }
+        
+        //otherwise 
+        else{
+            //if not a drop down list
+            if(nodeType!= "OPTION"){
+                //call paragraph method to keep every part of the question
+                //on a new line
+                makeParagraphNode();
+            }
+            else{
+                //if it is a drop down list
+                //make paragraph not a select node to contain the option nodes
+                paragraph = document.getElementMyId("selectID");
+            }
+            
+            //create a question node using the specified node type of the question
+            inputQuestion = document.createElement(nodeType);
+            //assign attribute values accordingly
+            inputQuestion.setAttribute("type",type);
+            inputQuestion.setAttribute("name",name);
+            //id will be set as the type attribute
+            //will also aid in searching for the node if set as id too
+            inputQuestion.id = type;
+            //attach event handler
+            inputQuestion.addEventListener('click',saveInput);
+            //append child to paragraph node
+            paragraph.appendChild(inputQuestion);
+            
+                
+        }
+        //document.getElementById("ENTER").removeEventListener('click',enterButtonEvent);
+        
+    }
+
+    //create paragraph node to attach to form node to separated
+    //question parts onto different lines
+    makeParagraphNode = function(){
+        paragraph = document.createElement("p");
+        formNode.appendChild(paragraph);
+        
+    }
+    
+    //if there are multiple options or items the user can select from
+    //this method breaks that values string down to individual options
+    multiValues = function(){
+        //valuesArray = values.split('-');
+        //if it is a drop down list question
+        //create a select node first to contain options under that node
+        if(nodeType == "OPTION"){
+            selectNode = document.createElement("select");
+            selectNode.name = name;
+            selectNode.id = "selectID";
+            formNode.appendChild(selectNode);
+            formNode = document.getElementById("selectID"); //assign it as the new form node to append to
+            //makeParagraphNode();
+            
+            //formNode.addEventListener('click',saveInput);
+        }
+        
+        //loop through values array
+        for(var i = 0;i<valuesArray.length;i++){
+            //if not a drop down list, call makeParagraphNode method
+            if(nodeType!= "OPTION"){
+            makeParagraphNode();
+            }
+            //if a drop down list question, set paragraph node to select node
+            else{
+                paragraph = document.getElementById("selectID");
+            }
+            
+            //create a value node with the specified node type
+            valueNode = document.createElement(nodeType);
+            
+            //create a textnode as a label
+            textNode = document.createTextNode(valuesArray[i]);
+            //if drop down list, append text node only
+            if(nodeType == "OPTION"){
+                valueNode.appendChild(textNode);
+            }
+            //if not a drop down list, append text to a label node and append label node to value node
+            else{
+            labelNode = document.createElement("label");
+            labelNode.setAttribute("for",name);
+            labelNode.appendChild(textNode);
+            }
+            
+            //valueNode.open = true;
+            //set attributes acoordingly
+            valueNode.setAttribute("type",type);
+            valueNode.setAttribute("name",name);
+            valueNode.setAttribute("value",valuesArray[i]);
+            // if drop down node, id is the index of the option
+            if(nodeType == "OPTION"){
+                valueNode.id = i;
+            }
+            //if not drop down list question
+            //ID is the value of the node
+            else{
+            valueNode.id = valuesArray[i];}
+            //alert("ID - "+valueNode.id+"VALUE: "+valueNode.value);
+            valueNode.addEventListener('click',saveInput);
+            
+            //append value node and then label node so that the label is next to the question
+            //for the paragraph node (therefore both are on one line)
+            paragraph.appendChild(valueNode);           
+            paragraph.appendChild(labelNode);
+    
+        }
+        
+        //if drop down list question
+        //set form node back to the form node the page
+        if(nodeType == "OPTION"){
+            formNode = document.getElementById("formHere");
+        }
+    }
+    
+    //function to print the results after quiz is finished
+    var printResults;
+    printResults = function () {
+        document.getElementById("results").style.visibility = "visible";
+        //document.body.style.backgroundImage = 'none';
+                clearQuestion(); //clear last question from view
+                var enterButton = document.getElementById("ENTER"); //delete enter button too
+                enterButton.parentNode.removeChild(enterButton);
+                var instructionsNode = document.getElementById("instructions"); //delete instructions
+                instructionsNode.parentNode.removeChild(instructionsNode);
+                formNode.parentNode.removeChild(formNode);
+                
+                var resultsNode = document.getElementById("results"); //find results node
+                
+                //append node that says user finished the quiz
+                var finishedText = document.createElement("p");
+                finishedText.innerHTML = "YOU'VE FINISHED THE QUIZ";
+                resultsNode.appendChild(finishedText);
+                resultsAnswer=0;
+                
+                //append nodes that separate the score and finished game message and the results of the quiz
+                var resultsParagraph = document.createElement("p");
+                var breakLines = document.createElement("p");
+                var score = document.createElement("p");
+                
+                score.innerHTML="SCORE: "+answeredRight+"/20"
+                resultsNode.appendChild(score);
+                breakLines.innerHTML = "-------------------------";
+                
+                
+                //node to indicate format of how the results are displayed
+                var format = document.createElement("p");
+                format.innerHTML = "CORRECT ANSWER - YOUR ANSWER";
+                resultsNode.appendChild(format);
+                resultsNode.appendChild(breakLines);
+                
+                //loop through answer 2D array and print out the correct and user answer together
+                for (var i = 0; i < resultsArray.length; i++) {
+
+                    var questionNode = document.createElement("p");
+                    var questionSpace = document.createElement("p");
+                    var questionText = document.createTextNode((resultsAnswer+1)+". "+resultsArray[resultsAnswer][3]);
+                    questionNode.appendChild(questionText);
+                    resultsNode.appendChild(questionNode);
+                    
+
+                    var paragraphNode = document.createElement("p");
+                    if(resultsArray[resultsAnswer][2] == "X"){
+                        paragraphNode.id = "wrong"; //if wrong, set id as wrong for CSS coloring
+                    }
+                    else{
+                        paragraphNode.id="right"; //if right, set id as right for CSS coloring
+                    }
+                    
+                    //print question number
+                    //var questionNum = document.createTextNode((resultsAnswer+1)+". ");
+                    //paragraphNode.appendChild(questionNum);
+                    //display X or O depending on correctness, then correct answer, and then finally the user answer
+                    var displayResults = "                            " +resultsArray[resultsAnswer][2]+"  -  "+resultsArray[resultsAnswer][0] + " --- " +resultsArray[resultsAnswer][1];
+                    
+                    //create a text node with the string above that was just created
+                    var resultsNodeChild = document.createTextNode(displayResults);
+                    
+                    //append
+                    paragraphNode.appendChild(resultsNodeChild);
+                    resultsNode.appendChild(paragraphNode);
+                    resultsNode.appendChild(questionSpace);
+                    //increment resultsAnswer to move onto the next element in the results array
+                    resultsAnswer++;
+                    
+                }
+    }
+    var index; //index of drop down list option chosen
+    
+    //event handler when option is chosen
+    var saveInput = function(){
+        //document.getElementById("ENTER").addEventListener('click',enterButtonEvent);
+        //if a text or number type question
+        if(type == "text" || type == "number"){
+            input = null; //set input as null temporarily
+        }
+        //if drop down list, set input to null temporarily
+        //and set index as the id of the option
+        if(nodeType == "OPTION"){
+            //input = this.id;
+            input == null;
+            index = this.id;
+        }
+        
+        //else, if different kind of question, set input as node's id
+        else{input = this.id;}
+        
+        //alert("INPUT: "+input);
+        
+        //document.getElementById("ENTER").addEventListener('click',enterButtonEvent);
+        
+    }
+    //multiValues();
+    
+    //event handler for enter button click
+    var enterButtonEvent = function(){
+        resultsArray[resultsAnswer][3] = questionString;
+        //if drop down question
+        if (nodeType=="OPTION"){
+            input = document.getElementById("selectID").value; 
+            //get value of option chosen by getting the value of the select node
+        }
+        
+        //if a text or number type question
+        if(type == "text" || type == "number"){
+            input = document.getElementById(type).value; //get value of node type
+        }
+        
+            //saveInput();
+            //save correct answer and user answer in results array
+            resultsArray[resultsAnswer][0] = answer;
+            resultsArray[resultsAnswer][1] = input;
+            
+            //var debug = (answer.toUpperCase() == input.toUpperCase());
+            //set user answer as wrong as default
+            resultsArray[resultsAnswer][2]="X";
+            //if answer is right, set to O and increment number of correct answers
+            if(answer.toUpperCase() == input.toUpperCase()){
+                answeredRight++;
+                resultsArray[resultsAnswer][2]="O";
+            }
+            resultsAnswer++; //move onto next element in array
+            
+            currentQuestion++; //move onto next question to display 
+            //if next question is not null, quiz didn't end yet
+            //reassign questiont o next question in question array
+            if(questionArray[currentQuestion]!=null){
+            question = questionArray[currentQuestion];
+            //break fields of question string
+            breakFields();
+            //create and display next question
+            createNode();
+            }
+        
+        
+            //if null, quiz has ended
+            else{
+                printResults();
+            }
+            
+            
+        //reset input to null
+        input = null;
+        //reset values array to null
+        valuesArray = null;
+        //document.getElementById("ENTER").removeEventListener('click',enterButtonEvent);
+    }
+    
+    //assign enter button event handler to enter button
+    document.getElementById("ENTER").addEventListener('click',enterButtonEvent);
+    breakFields(); //break question fields
+    createNode(); //create and display question
+    //document.getElementById("ENTER").removeEventListener('click',enterButtonEvent);
+}
+
+    </script>
+</body>
+</html>
